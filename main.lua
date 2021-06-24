@@ -1,6 +1,7 @@
 local function mainclass()
 	local tool = script.Parent
 	local ammo = tool:WaitForChild("Ammo")
+	local clipsize = ammo:WaitForChild("ClipSize")
 	local shoot_part = tool:WaitForChild("Needle")
 	local onshoot = tool:WaitForChild("OnShoot")
 	local onreload = tool:WaitForChild("OnReload")
@@ -15,7 +16,7 @@ local function mainclass()
 	local function equip()
 		if equipped == false then
 			equipped = true
-
+			
 			local function equipsound()
 				local sound = Instance.new("Sound", tool)
 				sound.SoundId = "rbxassetid://1498950813"
@@ -27,7 +28,7 @@ local function mainclass()
 					sound:Destroy()
 				end))
 			end
-
+			
 			equipsound() 
 		end
 	end
@@ -35,7 +36,7 @@ local function mainclass()
 	local function unequip()
 		if equipped == true then
 			equipped = false
-
+			
 			local function unequipsound()
 				local sound = Instance.new("Sound", tool)
 				sound.SoundId = "rbxassetid://5917818749" 
@@ -47,38 +48,42 @@ local function mainclass()
 					sound:Destroy()
 				end))
 			end
-
+			
 			unequipsound()
 		end
 	end
 
 	local function reload()
 		if reloading == false and equipped == true then
-			if ammo.Value == 0 then
-				reloading = true
-
-				local function reloadsound()
-					local sound = Instance.new("Sound", tool)
-					sound.SoundId = "rbxassetid://5214579647"
-					sound.Volume = 1
-					sound.PlaybackSpeed = 1
-					sound:Play()
-					coroutine.resume(coroutine.create(function()
-						wait(1.358)
-						sound:Destroy()
-					end))
-				end
-
-				ammo.Value = 30
-				reloadsound()
-				wait(1)
-				reloading = false
-			elseif ammo > 0 and ammo < 30 then 
-				print("Not out of Ammo!")
-			else
-				ammo.Value = 0
-				print("Returned to 0 ammo.")
+			reloading = true
+			
+			local function reloadsound()
+				local sound = Instance.new("Sound", tool)
+				sound.SoundId = "rbxassetid://5214579647"
+				sound.Volume = 1
+				sound.PlaybackSpeed = 1
+				sound:Play()
+				coroutine.resume(coroutine.create(function()
+					wait(1.358)
+					sound:Destroy()
+				end))
 			end
+			
+			if ammo.Value == 0 then
+				ammo.Value = clipsize.Value
+			elseif ammo.Value == clipsize.Value then
+				ammo.Value += 1
+			else
+				ammo.Value = clipsize.Value
+			end
+			reloadsound()
+			wait(1)
+			reloading = false
+		elseif ammo > 0 and ammo < clipsize + 1 then 
+			print("Not out of Ammo!")
+		else
+			ammo.Value = 0
+			print("Returned to 0 ammo.")
 		end
 	end
 
@@ -97,7 +102,7 @@ local function mainclass()
 						sound:Destroy()
 					end))
 				end
-
+				
 				ammo.Value -= 1
 				sound()
 				local origin = shoot_part.Position
@@ -118,17 +123,17 @@ local function mainclass()
 						v:Destroy()
 					end
 				end
-
+				
 				if result then
 					local part = result.Instance
 					local humanoid = part.Parent:FindFirstChild("Humanoid") or part.Parent.Parent:FindFirstChild("Humanoid")
 					if humanoid then
 						if humanoid.Parent ~= script.Parent.Parent then
 							local player = game.Players:GetPlayerFromCharacter(humanoid.Parent)
-							local weld = Instance.new("WeldConstraint", bullet_clone) 
-							weld.Part0 = part
-							weld.Part1 = bullet_clone 
 							if player ~= nil then
+								local weld = Instance.new("WeldConstraint", bullet_clone) 
+								weld.Part0 = part
+								weld.Part1 = bullet_clone 
 								for i, v in pairs(humanoid.Parent:GetChildren()) do
 									if v ~= humanoid then
 										if v:IsA("MeshPart") then
@@ -141,7 +146,7 @@ local function mainclass()
 						end 
 					end
 				end
-
+				
 				wait(1.5)
 				debounce = false
 				wait(20)
@@ -155,3 +160,5 @@ local function mainclass()
 	tool.Equipped:Connect(equip)
 	tool.Unequipped:Connect(unequip)
 end
+
+mainclass()
