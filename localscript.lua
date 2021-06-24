@@ -72,6 +72,7 @@ local function reload(input, gameprocessed)
 					onreload:FireServer() 
 					wait(2.358)
 					newgui.Frame.TextLabel.Text = "30/30"
+					equip()
 					reloading = false
 				  loadanimation:Stop()
 				else
