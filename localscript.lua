@@ -19,8 +19,8 @@ local function mainclass()
 	local function equip()
 		if equipped == false then
 			equipped = true 
-			local loadanimation = animator:LoadAnimation(animations[1])
-			loadanimation:Play()
+			-- local loadanimation = animator:LoadAnimation(animations[1])
+			-- loadanimation:Play()
 			local newgui = gui:Clone()
 			newgui.Parent = client.PlayerGui
 			if equipped == true and reloading == false then
@@ -37,7 +37,7 @@ local function mainclass()
 						newgui.Frame.TextLabel.Text = ammo.Value.."/30"
 					end
 				end
-				loadanimation:Stop()
+				-- loadanimation:Stop()
 			else
 				print("No.")
 			end
@@ -47,8 +47,8 @@ local function mainclass()
 	local function unequip()
 		if equipped == true then
 			equipped = false
-			local loadanimation = animator:LoadAnimation(animations[2])
-			loadanimation:Play()
+			-- local loadanimation = animator:LoadAnimation(animations[2])
+			-- loadanimation:Play()
 			if client.PlayerGui:FindFirstChild("ToolGUI") ~= nil then
 				local newgui = client.PlayerGui:FindFirstChild("ToolGUI")
 				newgui:Destroy()
@@ -56,7 +56,7 @@ local function mainclass()
 				local newgui = client.PlayerGui:WaitForChild("ToolGUI")
 				newgui:Destroy()
 			end
-			loadanimation:Stop()
+			-- loadanimation:Stop()
 		end
 	end
 
@@ -64,9 +64,9 @@ local function mainclass()
 		if input ~= nil then
 			if input.KeyCode == Enum.KeyCode.R then
 				if reloading == false and equipped == true then
-					if ammo.Value == 0 then
-						local loadanimation = animator:LoadAnimation(animations[3])
-						loadanimation:Play()
+					if ammo.Value <= 30 then
+						-- local loadanimation = animator:LoadAnimation(animations[3])
+						-- loadanimation:Play()
 						reloading = true 
 						local newgui = client.PlayerGui:WaitForChild("ToolGUI")
 						newgui.Frame.TextLabel.Text = "Reloading..."
@@ -75,7 +75,7 @@ local function mainclass()
 						newgui.Frame.TextLabel.Text = "30/30"
 						equip()
 						reloading = false
-					  loadanimation:Stop()
+						-- loadanimation:Stop()
 					else
 						print("No.")
 					end
@@ -86,10 +86,10 @@ local function mainclass()
 
 	local function shoot()
 		if reloading == false and equipped == true then
-			local loadanimation = animator:LoadAnimation(animations[4])
-			loadanimation:Play()
+			-- local loadanimation = animator:LoadAnimation(animations[4])
+			-- loadanimation:Play()
 			onshoot:FireServer(cursor.Hit.Position)
-			loadanimation:Stop()
+			-- loadanimation:Stop()
 		else
 			print("Not Reloading...")
 		end
@@ -100,3 +100,5 @@ local function mainclass()
 	tool.Unequipped:Connect(unequip)
 	userinputservice.InputBegan:Connect(reload)
 end
+
+mainclass()
