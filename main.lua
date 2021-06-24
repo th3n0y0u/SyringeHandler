@@ -123,17 +123,20 @@ local function shoot(player, position)
 				local humanoid = part.Parent:FindFirstChild("Humanoid") or part.Parent.Parent:FindFirstChild("Humanoid")
 				if humanoid then
 					if humanoid.Parent ~= script.Parent.Parent then
+						local player = game.Players:GetPlayerFromCharacter(humanoid.Parent)
 						local weld = Instance.new("WeldConstraint", bullet_clone) 
 						weld.Part0 = part
 						weld.Part1 = bullet_clone 
-						for i, v in pairs(humanoid.Parent:GetChildren()) do
-							if v ~= humanoid then
-								if v:IsA("MeshPart") then
-									v.BrickColor = BrickColor.new(tool.Serum.Color)
+						if player ~= nil then
+							for i, v in pairs(humanoid.Parent:GetChildren()) do
+								if v ~= humanoid then
+									if v:IsA("MeshPart") then
+										v.BrickColor = BrickColor.new(tool.Serum.Color)
+									end
 								end
 							end
+							humanoid:TakeDamage(10)
 						end
-						humanoid:TakeDamage(10)
 					end 
 				end
 			end
