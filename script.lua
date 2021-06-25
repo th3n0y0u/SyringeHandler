@@ -36,6 +36,7 @@ local function mainclass()
 	local function unequip()
 		if equipped == true then
 			equipped = false
+			reloading = false
 			
 			local function unequipsound()
 				local sound = Instance.new("Sound", tool)
