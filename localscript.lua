@@ -47,6 +47,7 @@ local function mainclass()
 	local function unequip()
 		if equipped == true then
 			equipped = false
+			reloading = false
 			-- local loadanimation = animator:LoadAnimation(animations[2])
 			-- loadanimation:Play()
 			if client.PlayerGui:FindFirstChild("ToolGUI") ~= nil then
