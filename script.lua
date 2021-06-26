@@ -2,6 +2,8 @@ local function mainclass()
 	local tool = script.Parent
 	local ammo = tool:WaitForChild("Ammo")
 	local clipsize = ammo:WaitForChild("ClipSize")
+	local firerate = ammo:WaitForChild("FireRate")
+	local damage = ammo:WaitForChild("Damage")
 	local shoot_part = tool:WaitForChild("Needle")
 	local onshoot = tool:WaitForChild("OnShoot")
 	local onreload = tool:WaitForChild("OnReload")
@@ -90,8 +92,10 @@ local function mainclass()
 
 	local function shoot(player, position)
 		if debounce == false and reloading == false and equipped == true then
-			debounce = true
 			if ammo.Value >= 1 then
+				
+				debounce = true
+				
 				local function sound()
 					local sound = Instance.new("Sound", tool)
 					sound.SoundId = "rbxassetid://6911684149" 
@@ -142,13 +146,13 @@ local function mainclass()
 										end
 									end
 								end
-								humanoid:TakeDamage(10)
+								humanoid:TakeDamage(damage.Value)
 							end
 						end 
 					end
 				end
 				
-				wait(1.5)
+				wait(firerate.Value)
 				debounce = false
 				wait(20)
 				game:GetService("Debris"):AddItem(bullet_clone, 1)
