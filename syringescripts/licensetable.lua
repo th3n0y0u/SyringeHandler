@@ -5,7 +5,7 @@ local licenses = {
 	"Hi29YOLO",
 	"ujeen12345",
 	"walabamman",
-  "etc...etc...",
+        -- etc... etc...
 } 
 
 return licenses
